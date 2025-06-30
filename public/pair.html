@@ -1,0 +1,41 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Pair WhatsApp Bot</title>
+  <style>
+    body { font-family: sans-serif; background: #f0f0f0; text-align: center; padding-top: 80px; }
+    input, button {
+      padding: 10px; font-size: 16px; margin-top: 10px;
+      border: 1px solid #ccc; border-radius: 5px;
+    }
+    button { background-color: #4CAF50; color: white; cursor: pointer; }
+    #status { margin-top: 20px; color: #333; font-weight: bold; }
+  </style>
+</head>
+<body>
+  <h1>🔐 Connect Your WhatsApp</h1>
+  <p>Enter your phone number to receive a pairing code:</p>
+  <input type="text" id="phone" placeholder="947XXXXXXXX">
+  <br>
+  <button onclick="requestPair()">OK</button>
+  <div id="status"></div>
+
+  <script>
+    async function requestPair() {
+      const phone = document.getElementById('phone').value;
+      if (!phone.match(/^\d{9,15}$/)) {
+        document.getElementById('status').innerText = 'Invalid number';
+        return;
+      }
+      const res = await fetch('/pair', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ phone })
+      });
+      const data = await res.text();
+      document.getElementById('status').innerText = data;
+    }
+  </script>
+</body>
+</html>
